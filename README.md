@@ -1,5 +1,5 @@
 # data-engineering-test
-**The DataScience Data Engineering Test - A parallelized solution suggestion (in Python)**
+##The DataScience Data Engineering Test - A parallelized solution suggestion (in Python)
 
 Three years ago, Jordan Halterman  uploaded to Data Science Inc. GitHub account, a small battery of tests. These tests were aimed to evaluate the abilities of a Data Engineering candidate.
 
@@ -24,7 +24,7 @@ The problem comes when Line Feeds gate-crashed in the middle of the record. Virt
 It´s imperative to do something with this file. The proposed challenge is to write a simple script for transforming ***data.tsv***, the original file, into a properly formatted tab-separated values (TSV) file. That could be read by any standard CSV/TSV parser.
 
 The main formatting suggestion for the solution is:
-Fields that contain tab characters should be given back quoted.
+* Fields that contain tab characters should be given back quoted.
 It is consistent with the spirit of losing as less data as possible from the original file. Even those damned line feeds must be kept. If the misplaced line feeds are enclosed in quotes, its destructive capacity is overturned.
 And those strange 00s?
 Until now, we have been focused in the central problem and set aside collateral questions. Let´s deal with them.

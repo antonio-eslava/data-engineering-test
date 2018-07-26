@@ -7,7 +7,7 @@ Several companies are using them as a technical basis for hiring processes and t
 
 Here is my proposal of solution using parallelization. 
 
-##The problem: GitHub can´t parse the file##
+## The problem: GitHub can´t parse the file
 
 Jordan said that the test came from a real-world experience working on client data. The question? An apparently simple .tsv file that couldn´t be read by normal tsv readers and parsers.
 

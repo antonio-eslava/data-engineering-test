@@ -1,5 +1,5 @@
 # data-engineering-test
-##The DataScience Data Engineering Test - A parallelized solution suggestion (in Python)
+# The DataScience Data Engineering Test - A parallelized solution suggestion (in Python)
 
 Three years ago, Jordan Halterman  uploaded to Data Science Inc. GitHub account, a small battery of tests. These tests were aimed to evaluate the abilities of a Data Engineering candidate.
 
@@ -7,7 +7,7 @@ Several companies are using them as a technical basis for hiring processes and t
 
 Here is my proposal of solution using parallelization. 
 
-**The problem: GitHub can´t parse the file**
+##The problem: GitHub can´t parse the file##
 
 Jordan said that the test came from a real-world experience working on client data. The question? An apparently simple .tsv file that couldn´t be read by normal tsv readers and parsers.
 

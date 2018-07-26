@@ -13,7 +13,7 @@ Jordan said that the test came from a real-world experience working on client da
 
 As the author says, as long as GitHub cannot accurately parse the file, neither can our Hadoop, Pig, or data warehouse utilities.
 
-**The real problem: line feeds in the middle of some fields**
+### The real problem: line feeds in the middle of some fields
 
 Every record starts with a Line Feed character (0Ah) and finishes with the next Line Feed. Every field in the record starts with a Tab character (09h) and finishes with the next Tab.
 

@@ -26,60 +26,63 @@ It´s imperative to do something with this file. The proposed challenge is to wr
 The main formatting suggestion for the solution is:
 * Fields that contain tab characters should be given back quoted.
 It is consistent with the spirit of losing as less data as possible from the original file. Even those damned line feeds must be kept. If the misplaced line feeds are enclosed in quotes, its destructive capacity is overturned.
-And those strange 00s?
-Until now, we have been focused in the central problem and set aside collateral questions. Let´s deal with them.
- 
-As it can be seen, every byte in the file is escorted by a 00h character. Let´s make way to another small difficulty: the original file is encoded in UTF-16LE, and the corrected file must be delivered in UTF-8.
+
+**UTF-16 to UTF-8**
+There is another secondary warning about the file that must be taken into account.
+If you check the file with an hex editor, you can see that every byte in the file is escorted by a 00h character. This is because the original file is encoded in UTF-16LE, and the corrected file must be delivered in UTF-8.
 After checking the even positions in the file, I concluded that all of them were 00h. So, if I would remove them in the result file, no information would be lost.
-A simple solution
+
+**A simple solution**
 A simple solution would be going down the file, byte to byte, and, for each 0Ah found, checking if it is in the middle of a record. In that case, we should enclose all the field in quotes.
 How do I do that? Using a “quotes” field. If the 0Ah is found in the middle of a field, this parameter is raised to True. And, when the record end is found, the whole record is wrapped into quotes.
-A normal record
+
+**Anatomy of a normal record**
 Let´s see a normal record. At starting, the field value is null, and the t value is 0. t will act as the field number (five fields or each record: id, first_name, last_name, account_number, email).
 Each time a 09h (\t, tab) is found, the field values are changed.
- 
 When a 0Ah (line feed) is found, the record is finished. And the record values are reset.
-A defective record
-Here is a record with problems. The 0Ah is found when t = 2. So, the line feed is in the middle of the record, not at its end. The “quotes” parameter is raised and the whole field is wrapped into quotes.
+
+**Anatomy of a defective record**
+In a sample defective record, the 0Ah is found when t = 2. So, the line feed is in the middle of the record, not at its end. The “quotes” parameter is raised and the whole field is wrapped into quotes.
+Then the offending 0Ah is now locked up among quotes. 
+And the file can now be easily read by a normal tables parses. R for example:
  
-And, voilà, mission accomplished. The offending 0Ah is now locked up among quotes. 
- 
-The file can now be easily read by a normal tables parses. R for example:
- 
-Parallelization
+**Parallelization**
 The code for this simple script is in gitHub. But it hasn´t really a great relevance. There are thousands of more complicated problems solved each day by the legion of programmers giving support to our digitalized world.
- The real challenge comes with the parallelization 
-For bonus points, ambitious candidates can parallelize their algorithm.
+The real challenge comes with parallelization 
+*"For bonus points, ambitious candidates can parallelize their algorithm", said the problem descrption*.
 I´m not actually a candidate, but I´m ambitious. Especially regarding Parallelization, Big Data, Machine Learning and all this exciting stuff.
 And for helping people who starts with parallelization is because I have written this article. Not for experts and specialists, but for learners needing a concrete case. An interesting case beyond the parallelization of any easy “hello world” file.
-The behaviour of parallelization
+
+**The behaviour of parallelization**
 There are a lot of approximations to this technique, but I have had in mind the successful and ubiquitous framework of Apache Spark.
 The idea for this process is to take a dataset (the given file, in this case), divide them in several parts, and give each of these parts to a worker, node, container, … in a separate CPU. 
-The same script is executed in each of those containers. The results for each container are gathered and merging all these parts gives a final result.
+The same script is executed in each of those containers. The results for each container are gathered. And merging all these parts gives a final result.
 Advantages? Time. The time a CPU walks for all over the file is divided by the number of workers doing the same job …. In parallel. 😊
  
-The division problem
+**The division problem**
 We can then suppose that this process will work fine, at an incredible speed, delivering exact results without losing data.
 Everything would be as the text says:
-Given an arbitrary byte position and length, the algorithm cleans a portion of the full data set and produces a unique TSV output file.
+*"Given an arbitrary byte position and length, the algorithm cleans a portion of the full data set and produces a unique TSV output file".*
 Concatenating the outputs of multiple processes should result in a well-formed TSV file containing no duplicates.
 But here we have the key of the problem:
-It's important to note that the arbitrary position may not necessarily be the start of a new line.
+*"It's important to note that the arbitrary position may not necessarily be the start of a new line".*
 Each complete record in each worker will be treated and “fixed” using the already provided script. But, what about the records cut by the division?
 Each part of the original file will start with the tail of a record and will end with the head of another. The script won’t be able of count the fields for decide if one of them contains a spurious 0Ah.
-The broken fields
+
+**The broken fields**
 Let´s suppose that the record #201 is split among two parts of the file. One of them would end that way: 
 id: 201
 first_name: Kuame
 last_name: Cole
 account_number: 774
+
 And other of then would start like that:
 account_number: 288
 email: penatibus.et@dolor.org
 
-
 The worker that treats each fragment doesn´t know anything about the other part of the record. Then, it will be necessary to set a process that reunite the record parts after processing and fixing them. If we don´t treat these fragments in an appropriate manner, we could lose information, or have partial records.
-The solution
+
+**The solution**
 Before proposing my own solution to the problem, I would like to comment some small considerations:
 •	I could have divided the process in a set of Spark transformations and processes. But I have tried to make a unique script. Several transformations could provide more time and computational cost that a unique process split into a set of parallel workers.
 •	I have explored other approaches like regular expressions, or separator for Spark. But, none of them seemed to be simple. And I want to use this article for to help people who are starting with parallelization and ETL.

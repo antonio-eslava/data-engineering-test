@@ -103,5 +103,5 @@ There is a small piece of code that takes several fields ahead (15 in the propos
 **The final reassembling**
 Once the fixedXXX.tsv files ready, it´s necessary to reassemble them sequentially. Each parallelization framework has its own procedures or, as in the example shown, the own script will do this task at the end. The result: the original file with those offending internal 0Ah enclosed in quotes, without loss of data.
 
-**Only a simple approach to show the parallelization problem**
+### Only a simple approach to show the parallelization problem
 Of course, there will be a lot of more effective, clever, cleaner or sophisticated approaches to this problem. My aim was only to give to the beginners of parallelization an interesting problem and suggest how to solve it. In such a way that they can touch the main problem of the code independence for each of the nodes or workers.

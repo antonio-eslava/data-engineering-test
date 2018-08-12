@@ -1,9 +1,9 @@
 # data-engineering-test
 # The DataScience Data Engineering Test - A parallelized solution suggestion (in Python)
 
-Three years ago, Jordan Halterman  uploaded to Data Science Inc. GitHub account, a small battery of tests. These tests were aimed to evaluate the abilities of a Data Engineering candidate.
+Three years ago, Jordan Halterman  uploaded, to the Data Science GitHub account, a small battery of tests. These tests were aimed to evaluate the abilities of a Data Engineering candidate.
 
-Several companies are using them as a technical basis for hiring processes and this problem, in itself, is an interesting example of ETL. 
+Several companies are using them as a technical basis for hiring processes. And the problem posed by the test, in itself, is an interesting example of ETL. 
 
 Here is my proposal of solution using parallelization. 
 
@@ -21,7 +21,7 @@ The problem comes when Line Feeds gate-crashed in the middle of the record. Virt
 
 **The challenge is now clear**
 
-It´s imperative to do something with this file. The proposed challenge is to write a simple script for transforming ***data.tsv***, the original file, into a properly formatted tab-separated values (TSV) file. That could be read by any standard CSV/TSV parser.
+It´s imperative to do something with this file. The proposed challenge is to write a simple script for transforming ***data.tsv***, the original file, into a properly formatted tab-separated values (TSV) file. So it could be read by any standard CSV/TSV parser.
 
 The main formatting suggestion for the solution is:
 * Fields that contain tab characters should be given back quoted.

@@ -32,7 +32,7 @@ There is another secondary warning about the file that must be taken into accoun
 If you check the file with an hex editor, you can see that every byte in the file is escorted by a 00h character. This is because the original file is encoded in UTF-16LE, and the corrected file must be delivered in UTF-8.
 After checking the even positions in the file, I concluded that all of them were 00h. So, if I would remove them in the result file, no information would be lost.
 
-**A simple solution**
+### A simple solution
 A simple solution would be going down the file, byte to byte, and, for each 0Ah found, checking if it is in the middle of a record. In that case, we should enclose all the field in quotes.
 How do I do that? Using a “quotes” field. If the 0Ah is found in the middle of a field, this parameter is raised to True. And, when the record end is found, the whole record is wrapped into quotes.
 
@@ -46,7 +46,7 @@ In a sample defective record, the 0Ah is found when t = 2. So, the line feed is 
 Then the offending 0Ah is now locked up among quotes. 
 And the file can now be easily read by a normal tables parses. R for example:
  
-**Parallelization**
+### Parallelization
 The code for this simple script is in gitHub. But it hasn´t really a great relevance. There are thousands of more complicated problems solved each day by the legion of programmers giving support to our digitalized world.
 The real challenge comes with parallelization 
 *"For bonus points, ambitious candidates can parallelize their algorithm", said the problem descrption*.

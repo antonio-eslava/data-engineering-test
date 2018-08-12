@@ -84,29 +84,24 @@ The worker that treats each fragment doesn´t know anything about the other part
 
 **The solution**
 Before proposing my own solution to the problem, I would like to comment some small considerations:
-•	I could have divided the process in a set of Spark transformations and processes. But I have tried to make a unique script. Several transformations could provide more time and computational cost that a unique process split into a set of parallel workers.
-•	I have explored other approaches like regular expressions, or separator for Spark. But, none of them seemed to be simple. And I want to use this article for to help people who are starting with parallelization and ETL.
-•	It is supposed that every record has an id field, that field is consecutive, and there is no gap in the series. (This is important for the function firstRec() to infer the value of the id field for that record.
-•	There is a script in Python that is easily adaptable to any parallelization framework or technique.
+*	I could have divided the process in a set of Spark transformations and processes. But I have tried to make a unique script. Several transformations could provide more time and computational cost that a unique process split into a set of parallel workers.
+*	I have explored other approaches like regular expressions, or separator for Spark. But, none of them seemed to be simple. And I want to use this article for to help people who are starting with parallelization and ETL.
+*	It is supposed that every record has an id field, that field is consecutive, and there is no gap in the series. (This is important for the function firstRec() to infer the value of the id field for that record.
+*	There is a script in Python that is easily adaptable to any parallelization framework or technique.
 For this sample, I have divided the original data set (data.tsv) in five equal parts (part0.tsv, part1.tsv, part2.tsv, part3.tsv, part4.tsv). Each one of this parts is the feed for each worker in a parallelized system. In this case, and for testing purposes, the same script treats each part sequentially.
-Intermediate files
+
+**Intermediate files**
 For each part (0 to 4), the original part (partX.tsv) is read by three functions: firstRec(), mainRecs(), lastRec(), that create three intermediate files: fixedStartX.tsv, fixedMainX.tsv, fixedEndX.tsv. 
 The half records, united
 Every resulting file is fixed. The problem now is the half-records in the starting and the ending of each part.
 For each of them, the lastRec() and  firstRec() functions have created files (fixedEndX.tsv, fixedStartX.tsv), that have the same id. For the fixedEndX.tsv file, when a field is unknown, it is included, but with a Null value (nothing between the 09h separators). For both, If the field is partial, its part is passed to the file.
-Then, for each pair End-Start, we will have two files. For example:
- 
-Is a fixedEndX.tsv file. And:
- 
-Is a fixedStartX.tsv one.
-As we can see, the first of them is formed by the fields id=201, first_name=Kuame, last_name=Cole, and a partial account_number field, 774.
-The End file is formed by the fields id=201, first_name=Null, last_name=Null, a partial account_number field, with value 288, and email=penatibus.et@dolor.org.
+Then, for each pair End-Start, we will have two files, a *fixedEndX.tsv* and a *fixedStartX.tsv* ones.
 The function mixEndStart() takes each field for both records and concatenate them. The Null  fields don´t add anything, and the partial field is restored. The id field has a special treatment for not to be duplicated.
 How to know the id field when you don´t have the beginning of the record?
-There is a small piece of code that takes several fields ahead (15 in the proposal), checks if there are two consecutives numbers separated by five fields, and guess that the id number is the minor of them minus one:
-<code>
-The final reassembling
+There is a small piece of code that takes several fields ahead (15 in the proposal), checks if there are two consecutives numbers separated by five fields, and guess that the id number is the minor of them minus one.
+
+**The final reassembling**
 Once the fixedXXX.tsv files ready, it´s necessary to reassemble them sequentially. Each parallelization framework has its own procedures or, as in the example shown, the own script will do this task at the end. The result: the original file with those offending internal 0Ah enclosed in quotes, without loss of data.
-Only a simple approach to show the parallelization problem
+
+**Only a simple approach to show the parallelization problem**
 Of course, there will be a lot of more effective, clever, cleaner or sophisticated approaches to this problem. My aim was only to give to the beginners of parallelization an interesting problem and suggest how to solve it. In such a way that they can touch the main problem of the code independence for each of the nodes or workers.
-The code for this test is available in …. 

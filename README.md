@@ -37,7 +37,7 @@ A simple solution would be going down the file, byte to byte, and, for each 0Ah 
 How do I do that? Using a “quotes” field. If the 0Ah is found in the middle of a field, this parameter is raised to True. And, when the record end is found, the whole record is wrapped into quotes.
 
 **Anatomy of a normal record**
-Let´s see a normal record. At starting, the field value is null, and the *t* value is 0. *t* will act as the field number (five fields for each record: id, first_name, last_name, account_number, email).
+Let´s see a normal record. At starting, the field value is null, and the *t* value is 0. *t* will act as the field number (five fields for each record: *id*, *first_name*, *last_name*, *account_number*, *email*).
 Each time a 09h (\t, tab) is found, the field values are changed.
 When a 0Ah (line feed) is found, the record is finished. And the record values are reset.
 

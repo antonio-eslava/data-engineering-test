@@ -42,7 +42,7 @@ Each time a 09h (\t, tab) is found, the field values are changed.
 When a 0Ah (line feed) is found, the record is finished. And the record values are reset.
 
 **Anatomy of a defective record**
-In a sample defective record, the 0Ah is found when t = 2. So, the line feed is in the middle of the record, not at its end. The “quotes” parameter is raised and the whole field is wrapped into quotes.
+In a sample defective record, the 0Ah is found when *t* = 2. So, the line feed is in the middle of the record, not at its end. The “quotes” parameter is raised and the whole field is wrapped into quotes.
 Then the offending 0Ah is now locked up among quotes. 
 And the file can now be easily read by a normal tables parses. R for example:
  
